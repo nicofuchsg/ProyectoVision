@@ -8,13 +8,13 @@ TEST_FLAG = 100
 
 face_cascades_list = []
 
-face_cascades_list.append('haarcascade_face.xml')
+#face_cascades_list.append('haarcascade_face.xml')
 face_cascades_list.append('CUDAcascade_face.xml')
 face_cascades_list.append('LBPcascade_face.xml')
 face_cascades_list.append('CUDAcascade_face_2.xml')
 face_cascades_list.append('CUDAcascade_face_3.xml')
-face_cascades_list.append('cascade_MIO.xml') #--> MALO
-face_cascades_list.append('haarcascade_face_2.xml')
+#face_cascades_list.append('cascade_MIO.xml') #--> MALO
+#face_cascades_list.append('haarcascade_face_2.xml')
 
 #eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 eye_cascade = cv2.CascadeClassifier('CUDAcascade_eye2.xml')
@@ -53,9 +53,9 @@ for cascade in face_cascades_list:
             roi_gray = gray[y:y+h, x:x+w]
             roi_color = img[y:y+h, x:x+w]
             
-            #eyes = eye_cascade.detectMultiScale(roi_gray)
-            #for (ex,ey,ew,eh) in eyes:
-            #    cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
+            eyes = eye_cascade.detectMultiScale(roi_gray)
+            for (ex,ey,ew,eh) in eyes:
+                cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
         #Guardamos contador para analizar despues
         datos_informe.append(contador)
         #Agregamos numero de niños
