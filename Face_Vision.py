@@ -2,11 +2,17 @@ import numpy as np
 import cv2
 import time
 
-# multiple cascades: https://github.com/Itseez/opencv/tree/master/data/haarcascades
 
-face_cascade = cv2.CascadeClassifier('haarcascade_face.xml')
+#face_cascade = cv2.CascadeClassifier('haarcascade_face.xml')
+face_cascade = cv2.CascadeClassifier('CUDAcascade_face.xml')
+#face_cascade = cv2.CascadeClassifier('CUDAcascade_face_2.xml')
+#face_cascade = cv2.CascadeClassifier('CUDAcascade_face_3.xml')
+#face_cascade = cv2.CascadeClassifier('CUDAcascade_face_alt_tree.xml')
+
 #face_cascade = cv2.CascadeClassifier('haarcascade_face_MIO.xml')
-eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
+#eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
+eye_cascade = cv2.CascadeClassifier('CUDAcascade_eye2.xml')
+
 
 cap = cv2.VideoCapture("Teaching_1st_Graders.mp4")
 #Ancho 1280
