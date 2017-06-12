@@ -1,0 +1,24 @@
+Creamos Ejemplos:
+
+-Damos fotos de entrenamiento
+-Filtramos fotos (Original y Checked) 	--> Photo_creator.py
+										-->Eliminar fotos mal marcadas.
+
+-Generar listas positive/negative 		--> Photo.NEGPOS.py
+
+
+opencv_createsamples -info positive.txt -vec training.vec -num 400
+--> training.vec
+
+mkdir -f result
+opencv_traincascade -data result 
+					-vec training.vec 
+					-bg negative.txt 
+					-numPos 300 
+					-numNeg 1500 
+					-featureType HAAR 
+					-mode CORE 
+					-numStages 12 
+					-maxFalseAlarmRate 0.5 
+					-minHitRate 0.995
+-->cascade.xml
