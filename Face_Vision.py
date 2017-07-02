@@ -8,39 +8,54 @@ TEST_FLAG = 100
 
 face_cascades_list = []
 
-#face_cascades_list.append('haarcascade_face.xml')
-face_cascades_list.append('CUDAcascade_face.xml')
-face_cascades_list.append('LBPcascade_face.xml')
-face_cascades_list.append('CUDAcascade_face_2.xml')
-face_cascades_list.append('CUDAcascade_face_3.xml')
+##--> estos son los algoritmos de aprendizaje y reconocimiento de caras <--##
+
+face_cascades_list.append('haarcascade_face.xml')
+#face_cascades_list.append('CUDAcascade_face.xml')
+#face_cascades_list.append('LBPcascade_face.xml')
+#face_cascades_list.append('CUDAcascade_face_2.xml')
+#face_cascades_list.append('CUDAcascade_face_3.xml')
 #face_cascades_list.append('cascade_MIO.xml') #--> MALO
 #face_cascades_list.append('haarcascade_face_2.xml')
 
-#eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
-eye_cascade = cv2.CascadeClassifier('CUDAcascade_eye2.xml')
+
+##--> estos son los algoritmos de aprendizaje y reconocimiento de ojos <--##
+
+eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
+#eye_cascade = cv2.CascadeClassifier('CUDAcascade_eye2.xml')
 
 datos_totales = []
 
+#cascade es cada uno de los algoritmos agregados a la lista face_cascades_list
 for cascade in face_cascades_list:
+
+    ##--> en toda esta parte solo se dan caracteristicas de como va a ser el video <--##
+
+    #para el inicio del algoritmo anotar el tiempo en que inicia
     tiempo_inicial = time.time()
-    cap = cv2.VideoCapture("Teaching_1st_Graders.mp4")
-    #Ancho 1280
+    #lee archivos de video
+    cap = cv2.VideoCapture("ezgif.com-cut-video.mp4")
+    #Ancho 1280 , se agrega una propiedad en el videocapture
     cap.set(4,720)
-    #Largo 720
+    #Largo 720, se agrega una propiedad en el videocapture
     cap.set(5,680)
-    # FPS
+    # FPS, se agregan los frames per second
     cap.set(6,10)
 
+    #nombre del clasificador que vamos a usar en esta iteracion
     face_cascade = cv2.CascadeClassifier(cascade)
     
     datos_informe = []
 
     testing = 0
 
+    #mientras el video este abierto
     while (cap.isOpened()):
         testing += 1
+        #se hace un test con los primeros 100 flags del video
         if testing > TEST_FLAG:
             break
+        #imagen del video y ret?
         ret, img = cap.read()
         #Para eficiencia
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -58,7 +73,7 @@ for cascade in face_cascades_list:
                 cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
         #Guardamos contador para analizar despues
         datos_informe.append(contador)
-        #Agregamos numero de niños
+        #Agregamos numero de ninios
         font = cv2.FONT_HERSHEY_TRIPLEX
         thickness = 2
         texto_caras = "Caras: " + str(contador)
