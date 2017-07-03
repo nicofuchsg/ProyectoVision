@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import Datos_util
 import time
 
-TEST_FLAG = 100
+TEST_FLAG = 600
 
 face_cascades_list = []
 
@@ -32,7 +32,7 @@ for cascade in face_cascades_list:
     ##--> en toda esta parte solo se dan caracteristicas de como va a ser el video <--##
 
     #para el inicio del algoritmo anotar el tiempo en que inicia
-    tiempo_inicial = time.time()
+    tiempo_inicial = int(time.time())
     #lee archivos de video
     cap = cv2.VideoCapture("ezgif.com-cut-video.mp4")
     #Ancho 1280 , se agrega una propiedad en el videocapture
@@ -51,35 +51,38 @@ for cascade in face_cascades_list:
 
     #mientras el video este abierto
     while (cap.isOpened()):
+        tiempo_actual = int(time.time())
+        diferencia_tiempo = tiempo_actual-tiempo_inicial
         testing += 1
         #se hace un test con los primeros 100 flags del video
         if testing > TEST_FLAG:
             break
         #imagen del video y ret?
         ret, img = cap.read()
-        #Para eficiencia
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        #caras dentro del clasificador
-        faces = face_cascade.detectMultiScale(gray, 1.3, 5)
-        contador = 0
-        for (x,y,w,h) in faces:
-            contador += 1
-            cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
-            roi_gray = gray[y:y+h, x:x+w]
-            roi_color = img[y:y+h, x:x+w]
-            
-            eyes = eye_cascade.detectMultiScale(roi_gray)
-            for (ex,ey,ew,eh) in eyes:
-                cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
-        #Guardamos contador para analizar despues
-        datos_informe.append(contador)
-        #Agregamos numero de ninios
-        font = cv2.FONT_HERSHEY_TRIPLEX
-        thickness = 2
-        texto_caras = "Caras: " + str(contador)
-        posicion = (20,40)
-        color_texto = 255
-        cv2.putText(img,texto_caras, posicion, font,thickness, color_texto)
+        if diferencia_tiempo % 2 == 0 or diferencia_tiempo == 0:
+            #Para eficiencia
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            #caras dentro del clasificador
+            faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+            contador = 0
+            for (x,y,w,h) in faces:
+                contador += 1
+                cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
+                roi_gray = gray[y:y+h, x:x+w]
+                roi_color = img[y:y+h, x:x+w]
+
+                eyes = eye_cascade.detectMultiScale(roi_gray)
+                for (ex,ey,ew,eh) in eyes:
+                    cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
+            #Guardamos contador para analizar despues
+            datos_informe.append(contador)
+            #Agregamos numero de ninios
+            font = cv2.FONT_HERSHEY_TRIPLEX
+            thickness = 2
+            texto_caras = "Caras: " + str(contador)
+            posicion = (20,40)
+            color_texto = 255
+            cv2.putText(img,texto_caras, posicion, font,thickness, color_texto)
         cv2.imshow('img',img)
         k = cv2.waitKey(30) & 0xff
         if k == 27:
