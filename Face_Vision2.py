@@ -17,6 +17,11 @@ tiempo_inicial = int(time.time())
 #lee archivos de video
 cap = cv2.VideoCapture("Whole_Brain_Teaching__Grade_1_Classroom.mp4")
 #cap = cv2.VideoCapture("Teaching_1st_Graders.mp4")
+
+# Load sample picture and learn how to recognize it.
+profesor_image = face_recognition.load_image_file("profesora.jpg")
+profesor_face_encoding = face_recognition.face_encodings(profesor_image)[0]
+
 #Ancho 1280 , se agrega una propiedad en el videocapture
 cap.set(4,720)
 #Largo 720, se agrega una propiedad en el videocapture
@@ -27,6 +32,7 @@ cap.set(5,680)
 # Initialize some variables
 face_locations = []
 face_encodings = []
+face_names = []
 contador = 0
 process_this_frame = True
 
@@ -43,7 +49,15 @@ while (cap.isOpened()):
         # Find all the faces and face enqcodings in the frame of video
         face_locations = face_recognition.face_locations(frame)
         face_encodings = face_recognition.face_encodings(frame, face_locations)
-        process_this_frame = False
+        face_names = []
+        for face_encoding in face_encodings:
+            #Search know face
+            match = face_recognition.compare_faces([profesor_face_encoding], face_encoding)
+            texto_caras = "KID"
+            if match[0]:
+                texto_caras = "Profesoras" 
+            face_names.append(texto_caras)
+    process_this_frame = not process_this_frame
     
     # Loop through each face in this frame of video
     contador = 0
