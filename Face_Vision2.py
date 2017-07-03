@@ -19,7 +19,8 @@ cap = cv2.VideoCapture("Whole_Brain_Teaching__Grade_1_Classroom.mp4")
 #cap = cv2.VideoCapture("Teaching_1st_Graders.mp4")
 
 # Load sample picture and learn how to recognize it.
-profesor_image = face_recognition.load_image_file("profesora.jpg")
+#profesor_image = face_recognition.load_image_file("profesora.png")
+profesor_image = face_recognition.load_image_file("profesora2.jpg")
 profesor_face_encoding = face_recognition.face_encodings(profesor_image)[0]
 
 #Ancho 1280 , se agrega una propiedad en el videocapture
@@ -49,32 +50,39 @@ while (cap.isOpened()):
         # Find all the faces and face enqcodings in the frame of video
         face_locations = face_recognition.face_locations(frame)
         face_encodings = face_recognition.face_encodings(frame, face_locations)
-        face_names = []
-        for face_encoding in face_encodings:
-            #Search know face
-            match = face_recognition.compare_faces([profesor_face_encoding], face_encoding)
-            texto_caras = "KID"
-            if match[0]:
-                texto_caras = "Profesoras" 
-            face_names.append(texto_caras)
+        #face_names = []
+        #for face_encoding in face_encodings:
+            #Search known face
+            #match = face_recognition.compare_faces([profesor_face_encoding], face_encoding)
+            #name = "KID"
+            #if match[0]:
+            #   name = "Profesor" 
+            #face_names.append(name)
     process_this_frame = not process_this_frame
     
     # Loop through each face in this frame of video
     contador = 0
     for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
         contador += 1
+        for face_encoding in face_encodings:
+            #Search known face
+            match = face_recognition.compare_faces([profesor_face_encoding], face_encoding)
+            name = "KID"
+            if match[0]:
+                name = "Profesor" 
         top += 20
         right += 20
         bottom += 20
         left += 20
         #Draw a box around the face
         cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
-        cv2.rectangle(frame, (left, bottom + 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+        
+        cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
         font = cv2.FONT_HERSHEY_DUPLEX
-        name = "Face "+str(contador)
+        #name = "Face "+str(contador)
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-    if testing%100 == 0:
-        process_this_frame = not process_this_frame
+    #if testing%200 == 0:
+    #    process_this_frame = not process_this_frame
 
     #Guardamos contador para analizar despues
     datos_informe.append(contador)
