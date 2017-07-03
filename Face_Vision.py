@@ -10,7 +10,8 @@ face_cascades_list = []
 
 ##--> estos son los algoritmos de aprendizaje y reconocimiento de caras <--##
 
-face_cascades_list.append('haarcascade_face.xml')
+#face_cascades_list.append('haarcascade_face.xml')
+face_cascades_list.append('haarcascade_profileface.xml')
 #face_cascades_list.append('CUDAcascade_face.xml')
 #face_cascades_list.append('LBPcascade_face.xml')
 #face_cascades_list.append('CUDAcascade_face_2.xml')
@@ -34,7 +35,8 @@ for cascade in face_cascades_list:
     #para el inicio del algoritmo anotar el tiempo en que inicia
     tiempo_inicial = int(time.time())
     #lee archivos de video
-    cap = cv2.VideoCapture("ezgif.com-cut-video.mp4")
+    #cap = cv2.VideoCapture("Teaching_1st_Graders.mp4")
+    cap = cv2.VideoCapture("Whole_Brain_Teaching__Grade_1_Classroom.mp4")
     #Ancho 1280 , se agrega una propiedad en el videocapture
     cap.set(4,720)
     #Largo 720, se agrega una propiedad en el videocapture
@@ -77,7 +79,7 @@ for cascade in face_cascades_list:
             #Guardamos contador para analizar despues
             datos_informe.append(contador)
             #Agregamos numero de ninios
-            font = cv2.FONT_HERSHEY_TRIPLEX
+            font = cv2.FONT_HERSHEY_DUPLEX
             thickness = 2
             texto_caras = "Caras: " + str(contador)
             posicion = (20,40)
