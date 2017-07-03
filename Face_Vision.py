@@ -1,10 +1,12 @@
+import data_excel
+
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 import Datos_util
 import time
 
-TEST_FLAG = 600
+TEST_FLAG = 100
 
 face_cascades_list = []
 
@@ -26,6 +28,7 @@ eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 #eye_cascade = cv2.CascadeClassifier('CUDAcascade_eye2.xml')
 
 datos_totales = []
+excel_data = data_excel.DataExcel()
 
 #cascade es cada uno de los algoritmos agregados a la lista face_cascades_list
 for cascade in face_cascades_list:
@@ -46,11 +49,10 @@ for cascade in face_cascades_list:
 
     #nombre del clasificador que vamos a usar en esta iteracion
     face_cascade = cv2.CascadeClassifier(cascade)
-    
+
     datos_informe = []
 
     testing = 0
-
     #mientras el video este abierto
     while (cap.isOpened()):
         tiempo_actual = int(time.time())
@@ -61,7 +63,8 @@ for cascade in face_cascades_list:
             break
         #imagen del video y ret?
         ret, img = cap.read()
-        if diferencia_tiempo % 2 == 0 or diferencia_tiempo == 0:
+        #if diferencia_tiempo % 2 == 0 or diferencia_tiempo == 0:
+        if True:
             #Para eficiencia
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             #caras dentro del clasificador
@@ -77,6 +80,9 @@ for cascade in face_cascades_list:
                 for (ex,ey,ew,eh) in eyes:
                     cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
             #Guardamos contador para analizar despues
+            excel_data.faces_to_excel(move_row=1,
+                                      tiempo=int(time.time())-tiempo_inicial,
+                                      caras=contador)
             datos_informe.append(contador)
             #Agregamos numero de ninios
             font = cv2.FONT_HERSHEY_DUPLEX
@@ -90,12 +96,15 @@ for cascade in face_cascades_list:
         if k == 27:
             break
 
+
     cap.release()
     cv2.destroyAllWindows()
     #print("-"*20)
     promedio = Datos_util.promedio(datos_informe)
     tiempo_ejecucion = time.time() - tiempo_inicial
-    datos_totales.append([cascade,promedio,tiempo_ejecucion])
+    datos_totales.append([cascade, promedio, tiempo_ejecucion])
+    print datos_totales, "promedio"
+    #contador+= 1
     #print("Tiempo de ejecucion", tiempo_ejecucion)
     #print("-"*20)
 
@@ -113,3 +122,9 @@ plt.xlabel('Face Number')
 plt.ylabel('Time')
 plt.legend()
 plt.show()
+
+#for x in range(len(datos_totales)):
+#    excel_data.data_to_excel(contador=1,
+#                             clasificador=datos_totales[x][0],
+#                             caras=datos_totales[x][1],
+#                             tiempo_ejecucion=datos_totales[x][2])
