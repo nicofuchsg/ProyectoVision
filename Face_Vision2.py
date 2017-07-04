@@ -4,23 +4,26 @@ import face_recognition
 import matplotlib.pyplot as plt
 import Datos_util
 import time
+import data_excel
 
-TEST_FLAG = 1000
+TEST_FLAG = 100
 
 datos_totales = []
 datos_informe = []
 testing = 0
+excel_data = data_excel.DataExcel()
+tiempo_inicial = time.time()
 
 
 #para el inicio del algoritmo anotar el tiempo en que inicia
 tiempo_inicial = int(time.time())
 #lee archivos de video
-cap = cv2.VideoCapture("Whole_Brain_Teaching__Grade_1_Classroom.mp4")
-#cap = cv2.VideoCapture("Teaching_1st_Graders.mp4")
+#cap = cv2.VideoCapture("Whole_Brain_Teaching__Grade_1_Classroom.mp4")
+cap = cv2.VideoCapture("Teaching_1st_Graders.mp4")
 
 # Load sample picture and learn how to recognize it.
-#profesor_image = face_recognition.load_image_file("profesora.png")
-profesor_image = face_recognition.load_image_file("profesora2.jpg")
+profesor_image = face_recognition.load_image_file("profesora.png")
+#profesor_image = face_recognition.load_image_file("profesora2.jpg")
 profesor_face_encoding = face_recognition.face_encodings(profesor_image)[0]
 
 #Ancho 1280 , se agrega una propiedad en el videocapture
@@ -40,8 +43,8 @@ process_this_frame = True
 
 #mientras el video este abierto
 while (cap.isOpened()):
-    tiempo_actual = int(time.time())
-    diferencia_tiempo = tiempo_actual-tiempo_inicial
+    tiempo_actual = time.time()
+    #diferencia_tiempo = tiempo_actual-tiempo_inicial
     testing += 1
     # Grab a single frame of video
     ret, frame = cap.read()
@@ -81,8 +84,8 @@ while (cap.isOpened()):
         font = cv2.FONT_HERSHEY_DUPLEX
         #name = "Face "+str(contador)
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-    #if testing%200 == 0:
-    #    process_this_frame = not process_this_frame
+    if testing%200 == 0:
+        process_this_frame = not process_this_frame
 
     #Guardamos contador para analizar despues
     datos_informe.append(contador)
@@ -93,8 +96,14 @@ while (cap.isOpened()):
     posicion = (20,40)
     color_texto = 255
     cv2.putText(frame,texto_caras, posicion, font,thickness, color_texto)
+    if testing%5 == 0:    
+        print("Processing frame",testing)
+        tiempo_usado = time.time()-tiempo_inicial
+        #Process kid looking the profesor
+        excel_data.faces_to_excel(move_row=1, tiempo=int(tiempo_usado), caras=contador, carasMirando=contador-1)
     # Display the resulting image
     cv2.imshow('Video', frame)
+    
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q') or testing > TEST_FLAG:

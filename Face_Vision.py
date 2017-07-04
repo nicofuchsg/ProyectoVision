@@ -13,9 +13,9 @@ face_cascades_list = []
 ##--> estos son los algoritmos de aprendizaje y reconocimiento de caras <--##
 
 #face_cascades_list.append('haarcascade_face.xml')
-face_cascades_list.append('haarcascade_profileface.xml')
+#face_cascades_list.append('haarcascade_profileface.xml')
 #face_cascades_list.append('CUDAcascade_face.xml')
-#face_cascades_list.append('LBPcascade_face.xml')
+face_cascades_list.append('LBPcascade_face.xml')
 #face_cascades_list.append('CUDAcascade_face_2.xml')
 #face_cascades_list.append('CUDAcascade_face_3.xml')
 #face_cascades_list.append('cascade_MIO.xml') #--> MALO
@@ -103,7 +103,7 @@ for cascade in face_cascades_list:
     promedio = Datos_util.promedio(datos_informe)
     tiempo_ejecucion = time.time() - tiempo_inicial
     datos_totales.append([cascade, promedio, tiempo_ejecucion])
-    print datos_totales, "promedio"
+    #print datos_totales, "promedio"
     #contador+= 1
     #print("Tiempo de ejecucion", tiempo_ejecucion)
     #print("-"*20)
